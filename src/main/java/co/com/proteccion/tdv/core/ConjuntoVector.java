@@ -5,7 +5,6 @@ public class ConjuntoVector {
     private char[] vector;
     private int tamano;
     private static final char[] UNIVERSAL_SET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-
     public ConjuntoVector(int tamano) {
         this.tamano = tamano;
         this.vector = new char[tamano];
@@ -71,7 +70,7 @@ public class ConjuntoVector {
                 System.out.print(c + " ");
             }
         }
-        System.out.println("]");
+        System.out.print("]");
     }
 
     public boolean pertenecer(char dato) {
@@ -83,9 +82,18 @@ public class ConjuntoVector {
         return false;
     }
 
+    public boolean perteneceAlConjunto(char dato) {
+        for (char c : this.vector) {
+            if (c == dato) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean subConjunto(ConjuntoVector b) {
         for (char c : this.vector) {
-            if (c != '\0' && !b.pertenecer(c)) {
+            if (c != '\0' && !b.perteneceAlConjunto(c)) {
                 return false;
             }
         }
@@ -110,7 +118,7 @@ public class ConjuntoVector {
             }
         }
         for (char c : b.getVector()) {
-            if (c != '\0' && !unionConjunto.pertenecer(c)) {
+            if (c != '\0' && !unionConjunto.perteneceAlConjunto(c)) {
                 unionConjunto.setDato(index++, c);
             }
         }
@@ -121,10 +129,45 @@ public class ConjuntoVector {
         ConjuntoVector interseccionConjunto = new ConjuntoVector(Math.min(this.tamano, b.getTamano()));
         int index = 0;
         for (char c : this.vector) {
-            if (c != '\0' && b.pertenecer(c)) {
+            if (c != '\0' && b.perteneceAlConjunto(c)) {
                 interseccionConjunto.setDato(index++, c);
             }
         }
         return interseccionConjunto;
+    }
+    public ConjuntoVector diferencia(ConjuntoVector b){
+        ConjuntoVector diferenciaConjunto = new ConjuntoVector(this.tamano);
+        int index = 0;
+        for (char c : this.vector) {
+            if (c != '\0' && !b.perteneceAlConjunto(c)) {
+                diferenciaConjunto.setDato(index++, c);
+            }
+        }
+        return diferenciaConjunto;
+    }
+    public ConjuntoVector diferenciaSimetrica(ConjuntoVector b){
+        ConjuntoVector diferenciaSimetricaConjunto = new ConjuntoVector(this.tamano + b.getTamano());
+        int index = 0;
+        for (char c : this.vector) {
+            if (c != '\0' && !b.perteneceAlConjunto(c)) {
+                diferenciaSimetricaConjunto.setDato(index++, c);
+            }
+        }
+        for (char c : b.getVector()) {
+            if (c != '\0' && !this.perteneceAlConjunto(c)) {
+                diferenciaSimetricaConjunto.setDato(index++, c);
+            }
+        }
+        return diferenciaSimetricaConjunto;
+    }
+    public ConjuntoVector complemento(){
+        ConjuntoVector complementoConjunto = new ConjuntoVector(UNIVERSAL_SET.length);
+        int index = 0;
+        for (char c : UNIVERSAL_SET) {
+            if (!this.perteneceAlConjunto(c)) {
+                complementoConjunto.setDato(index++, c);
+            }
+        }
+        return complementoConjunto;
     }
 }

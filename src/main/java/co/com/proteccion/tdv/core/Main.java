@@ -36,7 +36,7 @@ public class Main {
                 scanner.close();
                 return;
             }
-            int idConjunto = obtenerIdConjunto(scanner);
+            int idConjunto = obtenerIdConjunto(scanner, opcion);
             if (idConjunto == 0) {
                 System.out.println("Opción de conjunto no válida");
                 continue;
@@ -68,18 +68,27 @@ public class Main {
         System.out.println("4. Verificar si el Conjunto es vacío");
         System.out.println("5. Unión de dos conjuntos");
         System.out.println("6. Intersección de dos conjuntos");
+        System.out.println("7. Diferencia de dos conjuntos");
+        System.out.println("8. Diferencia simétrica de dos conjuntos");
+        System.out.println("9. Complemento de un conjunto");
         System.out.println("11. Salir");
         System.out.print("> Seleccione una opción: ");
     }
 
-    private static int obtenerIdConjunto(Scanner scanner) {
-        System.out.print("> Escoja un Conjunto (1 para A, 2 para B): ");
-        return scanner.nextInt();
+    private static int obtenerIdConjunto(Scanner scanner, int opcionMenu) {
+        int[] opcionesNoMostrar = {8};
+        for (int opcion : opcionesNoMostrar) {
+            if (opcionMenu != opcion) {
+                System.out.print("> Escoja un Conjunto (1 para A, 2 para B): ");
+                return scanner.nextInt();
+            }
+        }
+        return -1;
     }
 
-    private static void ejecutarOpcion(int opcion, int idConjunto, ConjuntoVector conjuntoA, ConjuntoVector conjuntoB, Scanner scanner) {
+    private static void ejecutarOpcion(int opcion, int idConjunto, ConjuntoVector conjuntoA, ConjuntoVector
+            conjuntoB, Scanner scanner) {
         switch (opcion) {
-
             case 1:
                 if (idConjunto == 1) {
                     conjuntoA.mostrar();
@@ -99,9 +108,9 @@ public class Main {
                 break;
             case 3:
                 if (idConjunto == 1) {
-                    System.out.println(conjuntoA.subConjunto(conjuntoB) ? String.format("%s es un subconjunto", CONJUNTO_A) : String.format("%s no es un subconjunto", CONJUNTO_A));
+                    System.out.println(conjuntoA.subConjunto(conjuntoB) ? String.format("%s es un subconjunto de %s", CONJUNTO_A, CONJUNTO_B) : String.format("%s no es un subconjunto de %s", CONJUNTO_A, CONJUNTO_B));
                 } else {
-                    System.out.println(conjuntoB.subConjunto(conjuntoA) ? String.format("%s es un subconjunto", CONJUNTO_B) : String.format("%s no es un subconjunto", CONJUNTO_B));
+                    System.out.println(conjuntoB.subConjunto(conjuntoA) ? String.format("%s es un subconjunto de %s", CONJUNTO_B, CONJUNTO_A) : String.format("%s no es un subconjunto de %s", CONJUNTO_B, CONJUNTO_B));
                 }
                 break;
             case 4:
@@ -130,6 +139,36 @@ public class Main {
                 }
                 System.out.print("Intersección de los conjuntos: ");
                 interseccion.mostrar();
+                break;
+            case 7:
+                ConjuntoVector diferencia;
+                if (idConjunto == 1) {
+                    diferencia = conjuntoA.diferencia(conjuntoB);
+                } else {
+                    diferencia = conjuntoB.diferencia(conjuntoA);
+                }
+                System.out.print("Diferencia de los conjuntos: ");
+                diferencia.mostrar();
+                break;
+            case 8:
+                System.out.println("Diferencia simétrica de los conjuntos:");
+                ConjuntoVector diferenciaSimetrica = conjuntoA.diferenciaSimetrica(conjuntoB);
+                diferenciaSimetrica.mostrar();
+                break;
+            case 9:
+                ConjuntoVector complemento;
+                if (idConjunto == 1) {
+                    complemento = conjuntoA.complemento();
+                } else {
+                    complemento = conjuntoB.complemento();
+                }
+                System.out.print(String.format("El complemento del conjunto %s:", idConjunto == 1 ? CONJUNTO_A : CONJUNTO_B));
+                if (idConjunto == 1) {
+                    conjuntoA.mostrar();
+                } else {
+                    conjuntoB.mostrar();
+                }
+                complemento.mostrar();
                 break;
             default:
                 System.out.println("Opción no válida");
