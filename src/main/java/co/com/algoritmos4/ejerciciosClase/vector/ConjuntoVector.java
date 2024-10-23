@@ -1,4 +1,4 @@
-package co.com.proteccion.tdv.core;
+package co.com.algoritmos4.ejerciciosClase.vector;
 
 public class ConjuntoVector {
 
