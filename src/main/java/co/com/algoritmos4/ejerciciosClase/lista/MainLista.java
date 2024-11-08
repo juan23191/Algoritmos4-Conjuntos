@@ -14,9 +14,12 @@ public class MainLista {
         ConjuntoListaLigada conjuntoA = new ConjuntoListaLigada();
         int tamanoA = obtenerTamanoConjunto(scanner, CONJUNTO_A);
         for (int i = 0; i < tamanoA; i++) {
+            boolean datoValido = true;
             System.out.println("> Ingrese el dato para el " + CONJUNTO_A);
             char dato = scanner.next().charAt(0);
-            conjuntoA.agregar(dato);
+            if (!conjuntoA.agregar(dato)) {
+                i--;
+            }
         }
 
         ConjuntoListaLigada conjuntoB = new ConjuntoListaLigada();
@@ -99,9 +102,9 @@ public class MainLista {
                 System.out.print("> Ingrese el dato a verificar: ");
                 char dato = scanner.next().charAt(0);
                 if (idConjunto == 1) {
-                    System.out.println(conjuntoA.pertenecer(dato) ? String.format("El dato pertenece al %s", CONJUNTO_A) : String.format("El dato no pertenece al %s", CONJUNTO_A));
+                    System.out.println(conjuntoA.perteneceAlUniversal(dato) ? String.format("El dato pertenece al %s", CONJUNTO_A) : String.format("El dato no pertenece al %s", CONJUNTO_A));
                 } else {
-                    System.out.println(conjuntoB.pertenecer(dato) ? String.format("El dato pertenece al %s", CONJUNTO_B) : String.format("El dato no pertenece al %s", CONJUNTO_B));
+                    System.out.println(conjuntoB.perteneceAlUniversal(dato) ? String.format("El dato pertenece al %s", CONJUNTO_B) : String.format("El dato no pertenece al %s", CONJUNTO_B));
                 }
                 break;
             case 3:
